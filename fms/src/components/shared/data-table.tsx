@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
           </div>
         ) : <div />}
         <div className="flex items-center gap-2">
-          <p className="text-sm text-muted-foreground whitespace-nowrap">Rows per page:</p>
+          <p className="text-base text-muted-foreground whitespace-nowrap">Rows per page:</p>
           <Select
             value={pagination.pageSize.toString()}
             onValueChange={(value) => table.setPageSize(Number(value))}
@@ -140,7 +140,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-base text-muted-foreground">
           Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
           {Math.min(
             (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
