@@ -1,7 +1,10 @@
 import { Trip } from "@/types"
+import { createRNG } from "./rng"
+
+const rng = createRNG(106)
 
 function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return new Date(start.getTime() + rng() * (end.getTime() - start.getTime()))
 }
 
 const locations = [
@@ -54,13 +57,13 @@ export const mockTrips: Trip[] = Array.from({ length: 20 }, (_, i) => {
   const startTime = randomDate(new Date("2025-09-01"), new Date("2026-06-01"))
   const status = tripStatuses[i]
   const startOdometer = 30000 + i * 2500
-  const distanceKm = status === "completed" ? 50 + Math.floor(Math.random() * 400) : undefined
+  const distanceKm = status === "completed" ? 50 + Math.floor(rng() * 400) : undefined
   const endOdometer = distanceKm ? startOdometer + distanceKm : undefined
-  const fuelUsed = distanceKm ? Math.round(distanceKm * (0.1 + Math.random() * 0.05) * 10) / 10 : undefined
+  const fuelUsed = distanceKm ? Math.round(distanceKm * (0.1 + rng() * 0.05) * 10) / 10 : undefined
   const startLoc = locations[i % locations.length]
   let endLoc: string
   do {
-    endLoc = locations[Math.floor(Math.random() * locations.length)]
+    endLoc = locations[Math.floor(rng() * locations.length)]
   } while (endLoc === startLoc)
 
   return {
@@ -72,7 +75,7 @@ export const mockTrips: Trip[] = Array.from({ length: 20 }, (_, i) => {
     endLocation: endLoc,
     startTime,
     endTime: status === "completed"
-      ? new Date(startTime.getTime() + (2 + Math.random() * 10) * 60 * 60 * 1000)
+      ? new Date(startTime.getTime() + (2 + rng() * 10) * 60 * 60 * 1000)
       : undefined,
     startOdometer,
     endOdometer,

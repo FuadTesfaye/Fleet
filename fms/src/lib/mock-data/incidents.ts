@@ -1,7 +1,10 @@
 import { Incident } from "@/types"
+import { createRNG } from "./rng"
+
+const rng = createRNG(103)
 
 function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return new Date(start.getTime() + rng() * (end.getTime() - start.getTime()))
 }
 
 const incidentLocations = [
@@ -47,9 +50,9 @@ export const mockIncidents: Incident[] = Array.from({ length: 10 }, (_, i) => {
   const insuranceClaimed = severity !== "minor"
   const claimAmounts: Record<string, number> = {
     minor: 0,
-    moderate: 15000 + Math.floor(Math.random() * 35000),
-    severe: 80000 + Math.floor(Math.random() * 120000),
-    total_loss: 500000 + Math.floor(Math.random() * 1500000),
+    moderate: 15000 + Math.floor(rng() * 35000),
+    severe: 80000 + Math.floor(rng() * 120000),
+    total_loss: 500000 + Math.floor(rng() * 1500000),
   }
 
   return {

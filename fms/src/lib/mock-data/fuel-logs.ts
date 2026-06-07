@@ -1,4 +1,7 @@
 import { FuelLog } from "@/types"
+import { createRNG } from "./rng"
+
+const rng = createRNG(102)
 
 const stations = [
   "NOC Bole Station",
@@ -14,7 +17,7 @@ const stations = [
 ]
 
 function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return new Date(start.getTime() + rng() * (end.getTime() - start.getTime()))
 }
 
 const statuses: ("approved" | "pending" | "completed")[] = [
@@ -26,10 +29,10 @@ export const mockFuelLogs: FuelLog[] = Array.from({ length: 60 }, (_, i) => {
   const vehicleIdx = i % 15
   const driverIdx = i % 15
   const fuelType = vehicleIdx < 10 ? "diesel" as const : "petrol" as const
-  const liters = Math.floor(20 + Math.random() * 80)
+  const liters = Math.floor(20 + rng() * 80)
   const costPerLiter = fuelType === "diesel"
-    ? 65 + Math.random() * 8
-    : 70 + Math.random() * 10
+    ? 65 + rng() * 8
+    : 70 + rng() * 10
   const roundedCostPerLiter = Math.round(costPerLiter * 100) / 100
 
   return {
@@ -40,7 +43,7 @@ export const mockFuelLogs: FuelLog[] = Array.from({ length: 60 }, (_, i) => {
     liters,
     costPerLiter: roundedCostPerLiter,
     totalCost: Math.round(liters * roundedCostPerLiter * 100) / 100,
-    odometerAtFill: 30000 + (i * 450) + Math.floor(Math.random() * 200),
+    odometerAtFill: 30000 + (i * 450) + Math.floor(rng() * 200),
     fuelType,
     station: stations[i % stations.length],
     requestedById: `usr-${String(6 + driverIdx).padStart(3, "0")}`,

@@ -1,4 +1,7 @@
 import { Vehicle } from "@/types"
+import { createRNG } from "./rng"
+
+const rng = createRNG(101)
 
 const ethiopianCities: { lat: number; lng: number; address: string }[] = [
   { lat: 9.0192, lng: 38.7525, address: "Addis Ababa, Bole" },
@@ -62,13 +65,13 @@ const vehicleData: {
 const colors = ["White", "Silver", "Black", "Blue", "Red", "Gray", "Green", "Beige"]
 
 function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return new Date(start.getTime() + rng() * (end.getTime() - start.getTime()))
 }
 
 function generatePlate(index: number): string {
   const codes = ["AA", "OR", "AM", "TG", "DD", "SM", "AF", "SD", "GM", "BG", "HR"]
   const code = codes[index % codes.length]
-  const num = String(10000 + Math.floor(Math.random() * 89999)).slice(0, 5)
+  const num = String(10000 + Math.floor(rng() * 89999)).slice(0, 5)
   return `${code} ${num}`
 }
 
@@ -76,14 +79,14 @@ function generateChassis(): string {
   const chars = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789"
   let result = ""
   for (let i = 0; i < 17; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length))
+    result += chars.charAt(Math.floor(rng() * chars.length))
   }
   return result
 }
 
 function generateEngine(): string {
   const prefix = ["2GD", "1GD", "4JJ", "4HK", "1ZZ", "2TR", "TB48", "4N15"]
-  return `${prefix[Math.floor(Math.random() * prefix.length)]}-${String(Math.floor(Math.random() * 9999999)).padStart(7, "0")}`
+  return `${prefix[Math.floor(rng() * prefix.length)]}-${String(Math.floor(rng() * 9999999)).padStart(7, "0")}`
 }
 
 const statuses: ("active" | "maintenance" | "idle" | "out_of_service")[] = [
@@ -97,10 +100,10 @@ const statuses: ("active" | "maintenance" | "idle" | "out_of_service")[] = [
 
 export const mockVehicles: Vehicle[] = Array.from({ length: 30 }, (_, i) => {
   const vd = vehicleData[i % vehicleData.length]
-  const year = 2015 + Math.floor(Math.random() * 10)
-  const odometerKm = Math.floor(30000 + Math.random() * 220000)
+  const year = 2015 + Math.floor(rng() * 10)
+  const odometerKm = Math.floor(30000 + rng() * 220000)
   const nextMaintenanceKm = Math.ceil(odometerKm / 10000) * 10000 + 10000
-  const purchasePrice = 800000 + Math.floor(Math.random() * 4500000)
+  const purchasePrice = 800000 + Math.floor(rng() * 4500000)
 
   return {
     id: `veh-${String(i + 1).padStart(3, "0")}`,
@@ -113,7 +116,7 @@ export const mockVehicles: Vehicle[] = Array.from({ length: 30 }, (_, i) => {
     engineNumber: generateEngine(),
     fuelType: vd.fuelType,
     fuelCapacity: vd.capacity,
-    currentFuelLevel: Math.floor(vd.capacity * (0.15 + Math.random() * 0.85)),
+    currentFuelLevel: Math.floor(vd.capacity * (0.15 + rng() * 0.85)),
     odometerKm,
     status: statuses[i],
     assignedDriverId: i < 15 ? `drv-${String(i + 1).padStart(3, "0")}` : undefined,
@@ -121,7 +124,7 @@ export const mockVehicles: Vehicle[] = Array.from({ length: 30 }, (_, i) => {
     licenseExpiryDate: randomDate(new Date("2026-03-01"), new Date("2027-12-31")),
     nextMaintenanceKm,
     lastMaintenanceDate: randomDate(new Date("2025-08-01"), new Date("2026-05-01")),
-    purchaseDate: new Date(`${year}-${String(1 + Math.floor(Math.random() * 12)).padStart(2, "0")}-15`),
+    purchaseDate: new Date(`${year}-${String(1 + Math.floor(rng() * 12)).padStart(2, "0")}-15`),
     purchasePrice,
     departmentId: departments[i % departments.length],
     location: ethiopianCities[i % ethiopianCities.length],

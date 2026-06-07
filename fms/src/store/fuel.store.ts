@@ -41,7 +41,7 @@ export const useFuelStore = create<FuelState>((set, get) => ({
   },
 
   totalCostThisMonth: () => {
-    const startOfCurrentMonth = startOfMonth(new Date())
+    const startOfCurrentMonth = startOfMonth(new Date("2026-06-07T12:00:00Z"))
     return get()
       .fuelLogs.filter(
         (log) =>

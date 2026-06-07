@@ -1,7 +1,10 @@
 import { MaintenanceRequest, WorkOrder, SparePart } from "@/types"
+import { createRNG } from "./rng"
+
+const rng = createRNG(104)
 
 function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return new Date(start.getTime() + rng() * (end.getTime() - start.getTime()))
 }
 
 const issues = [
@@ -57,8 +60,8 @@ export const mockMaintenanceRequests: MaintenanceRequest[] = Array.from({ length
     urgency: urgencies[i],
     status,
     workOrderId: (status === "in_progress" || status === "completed") ? `wo-${String(i + 1).padStart(3, "0")}` : undefined,
-    maintenanceCost: isCompleted ? Math.floor(5000 + Math.random() * 45000) : undefined,
-    completedDate: isCompleted ? new Date(requestDate.getTime() + Math.random() * 14 * 24 * 60 * 60 * 1000) : undefined,
+    maintenanceCost: isCompleted ? Math.floor(5000 + rng() * 45000) : undefined,
+    completedDate: isCompleted ? new Date(requestDate.getTime() + rng() * 14 * 24 * 60 * 60 * 1000) : undefined,
   }
 })
 
@@ -80,23 +83,23 @@ const sparePartsData: { name: string; partNumber: string; unitCost: number }[] =
   { name: "Coolant 5L", partNumber: "CL-5L-1212", unitCost: 1500 },
 ]
 
-function generateSpareParts(count: number): SparePart[] {
+function generateSpareParts(count: number, woIdx: number): SparePart[] {
   const parts: SparePart[] = []
   const used = new Set<number>()
   for (let i = 0; i < count; i++) {
     let idx: number
-    do { idx = Math.floor(Math.random() * sparePartsData.length) } while (used.has(idx))
+    do { idx = Math.floor(rng() * sparePartsData.length) } while (used.has(idx))
     used.add(idx)
     const sp = sparePartsData[idx]
-    const qty = 1 + Math.floor(Math.random() * 4)
+    const qty = 1 + Math.floor(rng() * 4)
     parts.push({
-      id: `sp-${Date.now()}-${i}`,
+      id: `sp-${woIdx}-${i}-${idx}`,
       name: sp.name,
       partNumber: sp.partNumber,
       quantity: qty,
       unitCost: sp.unitCost,
       totalCost: qty * sp.unitCost,
-      isReplaced: Math.random() > 0.3,
+      isReplaced: rng() > 0.3,
     })
   }
   return parts
@@ -112,8 +115,8 @@ const woStatuses: ("pending" | "approved" | "in_progress" | "completed")[] = [
 export const mockWorkOrders: WorkOrder[] = Array.from({ length: 15 }, (_, i) => {
   const createdAt = randomDate(new Date("2025-10-01"), new Date("2026-05-15"))
   const status = woStatuses[i % woStatuses.length]
-  const parts = generateSpareParts(1 + Math.floor(Math.random() * 4))
-  const totalCost = parts.reduce((sum, p) => sum + p.totalCost, 0) + Math.floor(Math.random() * 5000)
+  const parts = generateSpareParts(1 + Math.floor(rng() * 4), i)
+  const totalCost = parts.reduce((sum, p) => sum + p.totalCost, 0) + Math.floor(rng() * 5000)
 
   return {
     id: `wo-${String(i + 1).padStart(3, "0")}`,
@@ -122,9 +125,9 @@ export const mockWorkOrders: WorkOrder[] = Array.from({ length: 15 }, (_, i) => 
     assignedMechanicId: "usr-005",
     description: `Work order for: ${issues[i % issues.length]}`,
     createdAt,
-    estimatedCompletionDate: new Date(createdAt.getTime() + (3 + Math.random() * 12) * 24 * 60 * 60 * 1000),
+    estimatedCompletionDate: new Date(createdAt.getTime() + (3 + rng() * 12) * 24 * 60 * 60 * 1000),
     actualCompletionDate: status === "completed"
-      ? new Date(createdAt.getTime() + (5 + Math.random() * 15) * 24 * 60 * 60 * 1000)
+      ? new Date(createdAt.getTime() + (5 + rng() * 15) * 24 * 60 * 60 * 1000)
       : undefined,
     status,
     spareParts: parts,

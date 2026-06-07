@@ -1,7 +1,10 @@
 import { TransportRequest } from "@/types"
+import { createRNG } from "./rng"
+
+const rng = createRNG(105)
 
 function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
+  return new Date(start.getTime() + rng() * (end.getTime() - start.getTime()))
 }
 
 const purposes = [
@@ -71,8 +74,8 @@ const trStatuses: ("pending" | "approved" | "rejected" | "completed" | "in_progr
 
 export const mockTransportRequests: TransportRequest[] = Array.from({ length: 25 }, (_, i) => {
   const requestDate = randomDate(new Date("2025-10-01"), new Date("2026-06-01"))
-  const departureDate = new Date(requestDate.getTime() + (1 + Math.random() * 7) * 24 * 60 * 60 * 1000)
-  const returnDate = new Date(departureDate.getTime() + (1 + Math.random() * 5) * 24 * 60 * 60 * 1000)
+  const departureDate = new Date(requestDate.getTime() + (1 + rng() * 7) * 24 * 60 * 60 * 1000)
+  const returnDate = new Date(departureDate.getTime() + (1 + rng() * 5) * 24 * 60 * 60 * 1000)
   const status = trStatuses[i]
   const isAssigned = status === "approved" || status === "in_progress" || status === "completed"
 
