@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { UserRole } from '@/types'
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const authCookie = request.cookies.get('fms-authenticated')
   const roleCookie = request.cookies.get('fms-role')
   const { pathname } = request.nextUrl
