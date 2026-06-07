@@ -7,3 +7,6 @@ export { mockTrips } from "./trips"
 export { mockIncidents } from "./incidents"
 export { mockTransportRequests } from "./transport-requests"
 export { mockAlerts, mockGeofences, mockDepartments } from "./alerts"
+export { mockCompanies } from "./companies"
+export { mockDivisions } from "./divisions"
+

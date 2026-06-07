@@ -222,6 +222,17 @@ export interface Department {
   code: string
 }
 
+export interface Company {
+  id: string
+  name: string
+  code: string
+  type: "headquarters" | "regional_office" | "station" | "logistics_node"
+  address: string
+  phone: string
+  isActive: boolean
+  createdAt: Date
+}
+
 export const ROLE_LABELS: Record<UserRole, string> = {
   super_admin: "Super Admin",
   basic_service_manager: "Basic Service Manager",
