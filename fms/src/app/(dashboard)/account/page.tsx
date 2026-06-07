@@ -63,7 +63,7 @@ export default function AccountPage() {
     setFormData({
       name: "",
       email: "",
-      role: "driver",
+      role: UserRole.DRIVER,
       department: divisions[0]?.name || "",
       phone: "",
     })

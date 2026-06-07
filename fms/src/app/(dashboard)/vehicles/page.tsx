@@ -3,14 +3,22 @@
 import { PageHeader } from "@/components/layout/page-header"
 import { DataTable } from "@/components/shared/data-table"
 import { columns } from "./columns"
-import { useVehicleStore } from "@/store/vehicle.store"
+import { useVehicles } from "@/hooks/use-vehicles"
 import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { Plus, Loader2 } from "lucide-react"
 import { usePermission } from "@/lib/permissions"
 
 export default function VehiclesPage() {
-  const vehicles = useVehicleStore((s) => s.vehicles)
+  const { data: vehicles = [], isLoading } = useVehicles()
   const canCreate = usePermission("vehicles.create")
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[400px] w-full items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">

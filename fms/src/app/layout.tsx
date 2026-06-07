@@ -4,6 +4,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { PWAProvider } from "@/components/pwa-provider";
+import { QueryProvider } from "@/components/query-provider";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
@@ -47,12 +48,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-sans">
-        <PWAProvider>
-          <TooltipProvider>
-            {children}
-          </TooltipProvider>
-          <Toaster />
-        </PWAProvider>
+        <QueryProvider>
+          <PWAProvider>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+            <Toaster />
+          </PWAProvider>
+        </QueryProvider>
       </body>
     </html>
   );
