@@ -42,8 +42,7 @@ export default function MaintenanceRequestPage() {
   const [formData, setFormData] = React.useState({
     vehicleId: "",
     description: "",
-    priority: "medium" as MaintenanceRequest["priority"],
-    estimatedCost: 0,
+    urgency: "medium" as MaintenanceRequest["urgency"],
   })
 
   const stats = React.useMemo(() => {
@@ -67,15 +66,17 @@ export default function MaintenanceRequestPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.vehicleId || !formData.description || formData.estimatedCost <= 0) {
+    if (!formData.vehicleId || !formData.description) {
       toast.error("Please fill in all fields correctly")
       return
     }
 
     addRequest({
-      ...formData,
-      estimatedCost: Number(formData.estimatedCost),
+      vehicleId: formData.vehicleId,
+      driverId: "user-1",
       requestDate: new Date(),
+      issueDescription: formData.description,
+      urgency: formData.urgency,
     })
 
     toast.success("Maintenance request submitted successfully")
@@ -83,8 +84,7 @@ export default function MaintenanceRequestPage() {
     setFormData({
       vehicleId: "",
       description: "",
-      priority: "medium",
-      estimatedCost: 0,
+      urgency: "medium",
     })
   }
 
@@ -111,7 +111,7 @@ export default function MaintenanceRequestPage() {
                 <DialogHeader>
                   <DialogTitle>Submit Maintenance Request</DialogTitle>
                   <DialogDescription>
-                    Provide fault descriptions and estimated costs for vehicle inspection.
+                    Provide fault descriptions and urgency for vehicle inspection.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -148,35 +148,23 @@ export default function MaintenanceRequestPage() {
                     />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="priority" className="text-right">
-                      Priority
+                    <Label htmlFor="urgency" className="text-right">
+                      Urgency
                     </Label>
                     <Select
-                      value={formData.priority}
-                      onValueChange={(val: any) => setFormData({ ...formData, priority: val })}
+                      value={formData.urgency}
+                      onValueChange={(val: any) => setFormData({ ...formData, urgency: val })}
                     >
                       <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select priority" />
+                        <SelectValue placeholder="Select urgency" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="low">Low Priority</SelectItem>
                         <SelectItem value="medium">Medium Priority</SelectItem>
                         <SelectItem value="high">High Priority</SelectItem>
+                        <SelectItem value="critical">Critical Priority</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="cost" className="text-right font-medium text-xs">
-                      Est. Cost (ETB)
-                    </Label>
-                    <Input
-                      id="cost"
-                      type="number"
-                      className="col-span-3"
-                      placeholder="e.g. 5000"
-                      value={formData.estimatedCost || ""}
-                      onChange={(e) => setFormData({ ...formData, estimatedCost: Number(e.target.value) })}
-                    />
                   </div>
                 </div>
                 <DialogFooter>
@@ -198,7 +186,7 @@ export default function MaintenanceRequestPage() {
       <DataTable
         columns={columns}
         data={requests}
-        searchKey="description"
+        searchKey="issueDescription"
         searchPlaceholder="Search issue description..."
       />
     </div>
