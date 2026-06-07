@@ -4,7 +4,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-001",
     name: "Abebe Kebede",
-    email: "superadmin@mill.gov.et",
+    email: "superadmin@fleet.com",
     role: UserRole.SUPER_ADMIN,
     department: "ICT Department",
     phone: "+251911234567",
@@ -14,7 +14,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-002",
     name: "Tigist Haile",
-    email: "manager@mill.gov.et",
+    email: "manager@fleet.com",
     role: UserRole.BASIC_SERVICE_MANAGER,
     department: "Irrigation Development Division",
     phone: "+251912345678",
@@ -24,7 +24,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-003",
     name: "Dawit Mengistu",
-    email: "deployhead@mill.gov.et",
+    email: "deployhead@fleet.com",
     role: UserRole.TRANSPORT_DEPLOYMENT_HEAD,
     department: "Lowlands Management Division",
     phone: "+251913456789",
@@ -34,7 +34,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-004",
     name: "Meron Tadesse",
-    email: "expert@mill.gov.et",
+    email: "expert@fleet.com",
     role: UserRole.TRANSPORT_DEPLOYMENT_EXPERT,
     department: "Lowlands Management Division",
     phone: "+251914567890",
@@ -44,7 +44,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-005",
     name: "Yonas Bekele",
-    email: "mechanic@mill.gov.et",
+    email: "mechanic@fleet.com",
     role: UserRole.MAINTENANCE_EXPERT,
     department: "Irrigation Development Division",
     phone: "+251915678901",
@@ -54,7 +54,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-006",
     name: "Solomon Girma",
-    email: "driver@mill.gov.et",
+    email: "driver@fleet.com",
     role: UserRole.DRIVER,
     department: "Lowlands Management Division",
     phone: "+251916789012",
@@ -64,7 +64,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-007",
     name: "Hanna Wolde",
-    email: "hanna.w@mill.gov.et",
+    email: "hanna.w@fleet.com",
     role: UserRole.TRANSPORT_DEPLOYMENT_EXPERT,
     department: "Finance",
     phone: "+251917890123",
@@ -74,7 +74,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-008",
     name: "Kidist Alemu",
-    email: "kidist.a@mill.gov.et",
+    email: "kidist.a@fleet.com",
     role: UserRole.ICT_DEPARTMENT,
     department: "ICT Department",
     phone: "+251918901234",
@@ -84,7 +84,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-009",
     name: "Bereket Tesfaye",
-    email: "bereket.t@mill.gov.et",
+    email: "bereket.t@fleet.com",
     role: UserRole.DRIVER,
     department: "Irrigation Development Division",
     phone: "+251919012345",
@@ -94,7 +94,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-010",
     name: "Selam Negash",
-    email: "selam.n@mill.gov.et",
+    email: "selam.n@fleet.com",
     role: UserRole.BASIC_SERVICE_MANAGER,
     department: "HR",
     phone: "+251910123456",
@@ -104,7 +104,7 @@ export const mockUsers: User[] = [
   {
     id: "usr-011",
     name: "Alemayehu Tesema",
-    email: "user@mill.gov.et",
+    email: "user@fleet.com",
     role: UserRole.USER,
     department: "Logistics",
     phone: "+251911123456",
