@@ -35,27 +35,30 @@ export const getColumns = ({
     cell: ({ row }) => <div className="font-medium max-w-[200px] truncate" title={row.getValue("description")}>{row.getValue("description")}</div>,
   },
   {
-    accessorKey: "priority",
-    header: "Priority",
+    accessorKey: "urgency",
+    header: "Urgency",
     cell: ({ row }) => {
-      const priority = row.getValue("priority") as string
+      const urgency = row.getValue("urgency") as string
       const color =
-        priority === "high"
+        urgency === "high" || urgency === "critical"
           ? "bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300"
-          : priority === "medium"
+          : urgency === "medium"
           ? "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
           : "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300"
       return (
         <span className={`text-xs px-2 py-0.5 rounded font-semibold capitalize ${color}`}>
-          {priority}
+          {urgency}
         </span>
       )
     },
   },
   {
-    accessorKey: "estimatedCost",
-    header: "Est. Cost",
-    cell: ({ row }) => <span>ETB {Number(row.getValue("estimatedCost")).toLocaleString()}</span>,
+    accessorKey: "maintenanceCost",
+    header: "Maintenance Cost",
+    cell: ({ row }) => {
+      const cost = row.getValue("maintenanceCost") as number
+      return <span>{cost ? `ETB ${cost.toLocaleString()}` : "—"}</span>
+    },
   },
   {
     accessorKey: "status",

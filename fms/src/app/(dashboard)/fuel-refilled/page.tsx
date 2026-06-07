@@ -31,8 +31,8 @@ import {
 import { toast } from "sonner"
 
 export default function FuelRefilledPage() {
-  const logs = useFuelStore((s) => s.logs)
-  const addLog = useFuelStore((s) => s.addLog)
+  const logs = useFuelStore((s) => s.fuelLogs)
+  const addLog = useFuelStore((s) => s.addFuelLog)
   const vehicles = useVehicleStore((s) => s.vehicles)
 
   const [open, setOpen] = React.useState(false)
@@ -51,13 +51,19 @@ export default function FuelRefilledPage() {
       return
     }
 
+    const vehicle = vehicles.find((v) => v.id === formData.vehicleId)
+
     addLog({
-      ...formData,
+      vehicleId: formData.vehicleId,
+      driverId: "user-1", // mock driver
+      requestedById: "user-1",
+      date: new Date(),
       liters: Number(formData.liters),
       totalCost: Number(formData.totalCost),
-      odometerReading: Number(formData.odometerReading),
-      date: new Date(),
-      status: "completed",
+      costPerLiter: Number((Number(formData.totalCost) / Number(formData.liters)).toFixed(2)),
+      odometerAtFill: Number(formData.odometerReading),
+      fuelType: (vehicle?.fuelType || "diesel") as any,
+      station: formData.stationName,
     })
 
     toast.success("Fuel refill receipt logged successfully")
@@ -101,7 +107,7 @@ export default function FuelRefilledPage() {
       cell: ({ row }) => <span>ETB {Number(row.getValue("totalCost")).toLocaleString()}</span>,
     },
     {
-      accessorKey: "stationName",
+      accessorKey: "station",
       header: "Refuelling Station",
     },
     {
@@ -217,7 +223,7 @@ export default function FuelRefilledPage() {
       <DataTable
         columns={columns}
         data={logs}
-        searchKey="stationName"
+        searchKey="station"
         searchPlaceholder="Search stations..."
       />
     </div>

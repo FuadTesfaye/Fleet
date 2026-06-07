@@ -57,6 +57,8 @@ export default function MaintenanceMaterialListPage() {
       ...formData,
       quantity: Number(formData.quantity),
       unitCost: Number(formData.unitCost),
+      totalCost: Number(formData.quantity) * Number(formData.unitCost),
+      isReplaced: false,
     })
 
     toast.success("Spare part registered to inventory")

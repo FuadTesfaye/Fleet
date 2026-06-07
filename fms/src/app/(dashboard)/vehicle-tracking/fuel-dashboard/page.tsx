@@ -27,7 +27,7 @@ const chartData = [
 
 export default function FuelDashboardPage() {
   const vehicles = useVehicleStore((s) => s.vehicles)
-  const fuelLogs = useFuelStore((s) => s.logs)
+  const fuelLogs = useFuelStore((s) => s.fuelLogs)
 
   const stats = React.useMemo(() => {
     const totalLiters = fuelLogs.reduce((acc, curr) => acc + curr.liters, 0)
