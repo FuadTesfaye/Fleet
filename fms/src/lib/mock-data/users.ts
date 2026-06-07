@@ -101,4 +101,14 @@ export const mockUsers: User[] = [
     createdAt: new Date("2024-06-15"),
     isActive: false,
   },
+  {
+    id: "usr-011",
+    name: "Alemayehu Tesema",
+    email: "user@mill.gov.et",
+    role: UserRole.USER,
+    department: "Logistics",
+    phone: "+251911123456",
+    createdAt: new Date("2024-06-20"),
+    isActive: true,
+  },
 ]

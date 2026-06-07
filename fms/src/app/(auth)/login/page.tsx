@@ -23,6 +23,7 @@ const QUICK_LOGINS = [
   { label: "Maintenance", email: "mechanic@mill.gov.et" },
   { label: "Driver", email: "driver@mill.gov.et" },
   { label: "ICT Dept", email: "kidist.a@mill.gov.et" },
+  { label: "Normal User", email: "user@mill.gov.et" },
 ]
 
 export default function LoginPage() {

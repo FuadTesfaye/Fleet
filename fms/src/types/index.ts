@@ -11,6 +11,7 @@ export enum UserRole {
   MAINTENANCE_EXPERT = "maintenance_expert",
   DRIVER = "driver",
   ICT_DEPARTMENT = "ict_department",
+  USER = "user",
 }
 
 export type VehicleStatus =
@@ -291,4 +292,5 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   [UserRole.MAINTENANCE_EXPERT]: "Maintenance Expert",
   [UserRole.DRIVER]: "Driver",
   [UserRole.ICT_DEPARTMENT]: "ICT Department",
+  [UserRole.USER]: "Normal User",
 }

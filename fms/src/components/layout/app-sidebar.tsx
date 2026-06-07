@@ -354,6 +354,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     UserRole.MAINTENANCE_EXPERT,
     UserRole.DRIVER,
     UserRole.ICT_DEPARTMENT,
+    UserRole.USER,
   ]
 
   return (
