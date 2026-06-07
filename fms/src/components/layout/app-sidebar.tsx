@@ -26,6 +26,7 @@ import {
   Navigation,
   Fuel,
   Link2,
+  Download,
 } from "lucide-react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
@@ -53,6 +54,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useAuthStore } from "@/store/auth.store"
 import { ROLE_LABELS, UserRole } from "@/types"
+import { usePWA } from "@/components/pwa-provider"
 
 export type NavItem = {
   title: string
@@ -329,6 +331,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
   const { user, logout, switchRole } = useAuthStore()
   const router = useRouter()
+  const { isInstallable, installApp } = usePWA()
 
   if (!user) return null
 
@@ -462,6 +465,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     {ROLE_LABELS[role]}
                   </DropdownMenuItem>
                 ))}
+                
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={installApp} className="text-primary focus:text-primary font-medium">
+                  <Download className="mr-2 h-4 w-4" />
+                  Install App
+                </DropdownMenuItem>
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />

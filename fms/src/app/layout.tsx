@@ -21,7 +21,6 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Fleet Management System | MILL",
   description: "Fleet Management System for the Ethiopian Ministry of Irrigation and Lowlands",
-  manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
