@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { useVehicleStore } from "@/store/vehicle.store"
-import { useTripStore } from "@/store/trip.store"
 import { Card, CardContent } from "@/components/ui/card"
 import { Navigation, MapPin } from "lucide-react"
 
@@ -14,8 +13,10 @@ export default function TrackingMap() {
   const markersRef = useRef<{ [key: string]: L.Marker }>({})
   
   const vehicles = useVehicleStore((s) => s.vehicles)
-  const activeTrips = useTripStore((s) => s.activeTrips())
   const getVehicle = useVehicleStore((s) => s.getById)
+
+  // Force recompile
+  // console.log("TrackingMap rendered")
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return

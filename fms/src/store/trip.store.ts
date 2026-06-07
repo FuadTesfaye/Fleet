@@ -7,7 +7,6 @@ interface TripState {
   getById: (id: string) => Trip | undefined
   getByVehicle: (vehicleId: string) => Trip[]
   getByDriver: (driverId: string) => Trip[]
-  activeTrips: () => Trip[]
 }
 
 export const useTripStore = create<TripState>()((set, get) => ({
@@ -18,6 +17,4 @@ export const useTripStore = create<TripState>()((set, get) => ({
   getByVehicle: (vehicleId) => get().trips.filter((t) => t.vehicleId === vehicleId),
   
   getByDriver: (driverId) => get().trips.filter((t) => t.driverId === driverId),
-  
-  activeTrips: () => get().trips.filter((t) => t.status === "active"),
 }))

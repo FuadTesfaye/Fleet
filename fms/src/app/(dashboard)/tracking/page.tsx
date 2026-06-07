@@ -7,7 +7,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { MapPin, Navigation } from "lucide-react"
 
 export default function TrackingPage() {
-  const activeTrips = useTripStore((s) => s.activeTrips())
+  const trips = useTripStore((s) => s.trips)
+  const activeTrips = trips.filter((t) => t.status === "active")
   const getVehicle = useVehicleStore((s) => s.getById)
 
   return (
