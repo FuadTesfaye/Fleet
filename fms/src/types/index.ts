@@ -233,6 +233,55 @@ export interface Company {
   createdAt: Date
 }
 
+export interface FreightOrder {
+  id: string
+  orderNumber: string
+  shipperId: string
+  consigneeId: string
+  commodityId: string
+  weightTons: number
+  volumeCbm: number
+  origin: string
+  destination: string
+  assignedVehicleId?: string
+  status: "pending" | "dispatched" | "delivered" | "cancelled"
+  freightCost: number
+  createdAt: Date
+}
+
+export interface Shipper {
+  id: string
+  name: string
+  code: string
+  contactName: string
+  phone: string
+  address: string
+}
+
+export interface Consignee {
+  id: string
+  name: string
+  code: string
+  contactName: string
+  phone: string
+  address: string
+}
+
+export interface Commodity {
+  id: string
+  name: string
+  code: string
+  category: "agricultural" | "fertilizer" | "construction" | "machinery" | "general"
+}
+
+export interface Tariff {
+  id: string
+  routeFrom: string
+  routeTo: string
+  ratePerTonKm: number
+  baseTariff: number
+}
+
 export const ROLE_LABELS: Record<UserRole, string> = {
   super_admin: "Super Admin",
   basic_service_manager: "Basic Service Manager",
