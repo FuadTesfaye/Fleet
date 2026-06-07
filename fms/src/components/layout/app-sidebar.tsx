@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
-  Gears, // Wait, Lucide icon for Gears is Settings or Hammer or Cpu, we will use Settings/Hammer
   Settings,
   Users,
   ClipboardList,

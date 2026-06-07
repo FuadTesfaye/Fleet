@@ -9,7 +9,8 @@ import { Truck, AlertTriangle, Fuel, Wrench } from "lucide-react"
 export function KPIRow() {
   const vehicles = useVehicleStore((s) => s.vehicles)
   const fuelStore = useFuelStore()
-  const activeWorkOrders = useMaintenanceStore((s) => s.workOrders.filter(w => w.status === "in_progress"))
+  const workOrders = useMaintenanceStore((s) => s.workOrders)
+  const activeWorkOrders = workOrders.filter(w => w.status === "in_progress")
 
   const activeVehicles = vehicles.filter((v) => v.status === "active").length
   const totalVehicles = vehicles.length
