@@ -13,6 +13,7 @@ interface MaintenanceState {
   rejectRequest: (id: string) => void
   createWorkOrder: (wo: Omit<WorkOrder, "id" | "status" | "createdAt">) => void
   closeWorkOrder: (id: string, actualCompletionDate: Date) => void
+  addSparePart: (part: Omit<SparePart, "id">) => void
 }
 
 export const useMaintenanceStore = create<MaintenanceState>((set, get) => ({
@@ -20,6 +21,14 @@ export const useMaintenanceStore = create<MaintenanceState>((set, get) => ({
   workOrders: mockWorkOrders,
   spareParts: mockSpareParts,
   replacedItems: mockSpareParts.filter((p) => p.isReplaced),
+
+  addSparePart: (partData) => {
+    const newPart: SparePart = {
+      ...partData,
+      id: `sp-${Date.now()}`,
+    }
+    set((state) => ({ spareParts: [newPart, ...state.spareParts] }))
+  },
 
   addRequest: (reqData) => {
     const newReq: MaintenanceRequest = {
