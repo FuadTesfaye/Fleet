@@ -1,11 +1,11 @@
 import { z } from "zod"
 
 export const maintenanceRequestSchema = z.object({
-  vehicleId: z.string({ required_error: "Vehicle is required" }).uuid("Invalid vehicle ID format").or(z.string().min(1, "Vehicle is required")),
-  driverId: z.string({ required_error: "Driver is required" }).min(1, "Driver is required"),
+  vehicleId: z.string().uuid("Invalid vehicle ID format").or(z.string().min(1, "Vehicle is required")),
+  driverId: z.string().min(1, "Driver is required"),
   issueDescription: z.string().min(20, "Describe the issue in detail (at least 20 characters)"),
-  urgency: z.enum(["low", "medium", "high", "critical"], { required_error: "Urgency is required" }),
-  requestDate: z.date({ required_error: "Request date is required" }),
+  urgency: z.enum(["low", "medium", "high", "critical"]),
+  requestDate: z.date(),
 })
 
 export type MaintenanceRequestFormValues = z.infer<typeof maintenanceRequestSchema>
@@ -22,7 +22,7 @@ export const workOrderSchema = z.object({
   vehicleId: z.string().min(1, "Vehicle ID is required"),
   assignedMechanicId: z.string().min(1, "Mechanic is required"),
   description: z.string().min(10, "Description must be at least 10 characters"),
-  estimatedCompletionDate: z.date({ required_error: "Estimated completion date is required" }).min(new Date(), "Date must be in the future"),
+  estimatedCompletionDate: z.date().min(new Date(), "Date must be in the future"),
   spareParts: z.array(sparePartSchema),
 })
 

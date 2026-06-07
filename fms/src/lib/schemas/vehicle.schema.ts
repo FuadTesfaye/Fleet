@@ -12,19 +12,14 @@ export const vehicleSchema = z.object({
   color: z.string().min(1, "Color is required"),
   chassisNumber: z.string().min(10, "Chassis number must be at least 10 characters"),
   engineNumber: z.string().min(5, "Engine number must be at least 5 characters"),
-  fuelType: z.enum(["diesel", "petrol", "lpg"], { required_error: "Fuel type is required" }),
+  fuelType: z.enum(["diesel", "petrol", "lpg"]),
   fuelCapacity: z.number().positive("Fuel capacity must be positive"),
   purchasePrice: z.number().positive("Purchase price must be positive"),
-  insuranceExpiryDate: z.date({
-    required_error: "Insurance expiry date is required",
-    invalid_type_error: "That's not a date!",
-  }).min(new Date(), "Insurance must not be expired"),
-  licenseExpiryDate: z.date({
-    required_error: "License expiry date is required",
-  }),
+  insuranceExpiryDate: z.date().min(new Date(), "Insurance must not be expired"),
+  licenseExpiryDate: z.date(),
   nextMaintenanceKm: z.number().positive("Next maintenance km must be positive"),
   departmentId: z.string().min(1, "Department is required"),
-  purchaseDate: z.date({ required_error: "Purchase date is required" }),
+  purchaseDate: z.date(),
 })
 
 export type VehicleFormValues = z.infer<typeof vehicleSchema>

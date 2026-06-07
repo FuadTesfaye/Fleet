@@ -11,7 +11,7 @@ export const userSchema = z.object({
     "maintenance_expert",
     "driver",
     "ict_department",
-  ], { required_error: "Role is required" }),
+  ]),
   department: z.string().min(1, "Department is required"),
   phone: z.string().regex(/^\+251[79]\d{8}$/, "Valid Ethiopian phone required (e.g., +251911234567)"),
 })
