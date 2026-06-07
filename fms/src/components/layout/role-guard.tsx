@@ -5,27 +5,58 @@ import { usePathname, useRouter } from "next/navigation"
 import { useAuthStore } from "@/store/auth.store"
 import { data } from "./app-sidebar"
 import { Loader2 } from "lucide-react"
+import { UserRole } from "@/types"
 
 export function RoleGuard({ children }: { children: React.ReactNode }) {
   const { user, isAuthenticated } = useAuthStore()
   const pathname = usePathname()
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
 
   useEffect(() => {
-    // If we're not checking auth yet or don't have a user, wait.
-    // The middleware handles basic unauthenticated redirects, but we double check.
-    if (!isAuthenticated || !user) {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
+    const isPublicRoute = pathname === "/login" || pathname === "/"
+
+    // 1. Auth check
+    if (!isAuthenticated) {
+      if (!isPublicRoute) {
+        setIsAuthorized(false)
+        router.replace("/login")
+      } else {
+        setIsAuthorized(true)
+      }
       return
     }
 
-    // Dashboard root is always accessible
+    // 2. Already authenticated, trying to access public routes
+    if (isAuthenticated && isPublicRoute) {
+      setIsAuthorized(false)
+      router.replace("/dashboard")
+      return
+    }
+
+    // 3. Admin-only routes (legacy middleware check)
+    if (pathname.startsWith('/users') || pathname.startsWith('/organization')) {
+      if (user?.role !== UserRole.SUPER_ADMIN) {
+        setIsAuthorized(false)
+        router.replace("/dashboard")
+        return
+      }
+    }
+
+    // 4. Dashboard root is always accessible
     if (pathname === "/dashboard") {
       setIsAuthorized(true)
       return
     }
 
-    // Check if the current pathname is allowed for the user's role
+    // 5. Sidebar-based RBAC
     let isPathFound = false
     let isRoleAllowed = false
 
@@ -33,7 +64,7 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
       for (const item of group.items) {
         if (pathname === item.url || pathname.startsWith(`${item.url}/`)) {
           isPathFound = true
-          if (!item.allowedRoles || item.allowedRoles.includes(user.role)) {
+          if (!item.allowedRoles || item.allowedRoles.includes(user!.role)) {
             isRoleAllowed = true
           }
           break
@@ -42,19 +73,17 @@ export function RoleGuard({ children }: { children: React.ReactNode }) {
       if (isPathFound) break
     }
 
-    // If the path is not in our nav list at all, we assume it's a safe internal route (or handle differently)
-    // But if it IS in our list, and the role is NOT allowed, block them.
     if (isPathFound && !isRoleAllowed) {
       setIsAuthorized(false)
       router.replace("/dashboard")
     } else {
       setIsAuthorized(true)
     }
-  }, [pathname, user, isAuthenticated, router])
+  }, [pathname, user, isAuthenticated, router, mounted])
 
-  if (isAuthorized === null) {
+  if (!mounted || isAuthorized === null) {
     return (
-      <div className="flex h-[80vh] w-full items-center justify-center">
+      <div className="flex h-screen w-full items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     )

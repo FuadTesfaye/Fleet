@@ -32,7 +32,7 @@ export function middleware(request: NextRequest) {
 
   // Role-based route guards
   if (isAuthenticated) {
-    if (pathname.startsWith('/users') || pathname.startsWith('/organization')) {
+    if (pathname.startsWith('/users') || pathname.startsWith('/organization') || pathname.startsWith('/administration')) {
       if (userRole !== UserRole.SUPER_ADMIN) {
         return NextResponse.redirect(new URL('/dashboard', request.url))
       }
@@ -44,13 +44,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
 }
