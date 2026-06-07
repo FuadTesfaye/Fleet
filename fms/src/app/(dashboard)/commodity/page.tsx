@@ -87,7 +87,7 @@ export default function CommodityPage() {
                 Register Cargo Type
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Register Commodity Type</DialogTitle>

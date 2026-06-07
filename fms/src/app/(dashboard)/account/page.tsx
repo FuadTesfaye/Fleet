@@ -82,7 +82,7 @@ export default function AccountPage() {
                 Register User
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Register User Profile</DialogTitle>

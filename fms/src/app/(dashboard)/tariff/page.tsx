@@ -87,7 +87,7 @@ export default function TariffPage() {
                 Register Tariff
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Add Pricing Tariff Corridor</DialogTitle>

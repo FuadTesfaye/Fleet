@@ -88,7 +88,7 @@ export default function RequestAssignmentPage() {
       />
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle>Assign Trip Resources</DialogTitle>
             <DialogDescription>

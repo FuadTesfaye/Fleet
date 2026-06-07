@@ -91,7 +91,7 @@ export default function ShipperPage() {
                 Register Shipper
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Register Shipper Entity</DialogTitle>

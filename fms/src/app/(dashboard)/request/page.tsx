@@ -89,7 +89,7 @@ export default function RequestPage() {
                 New Request
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Request Transportation</DialogTitle>

@@ -76,7 +76,7 @@ export default function DivisionAssignmentPage() {
       />
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[400px]">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle>Reallocate Vehicle Division</DialogTitle>
             <DialogDescription>

@@ -91,7 +91,7 @@ export default function ConsigneePage() {
                 Register Consignee
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Register Consignee Entity</DialogTitle>

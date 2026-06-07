@@ -120,7 +120,7 @@ export default function MaintenanceMaterialListPage() {
                 Add Spare Part
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Register Spare Part</DialogTitle>

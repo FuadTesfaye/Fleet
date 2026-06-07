@@ -137,7 +137,7 @@ export default function GeoroutePage() {
                 Register Route
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>Register Route Corridor</DialogTitle>

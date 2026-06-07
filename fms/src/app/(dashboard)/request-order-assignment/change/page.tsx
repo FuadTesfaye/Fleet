@@ -86,7 +86,7 @@ export default function AssignmentChangePage() {
       />
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle>Re-assign Trip Resources</DialogTitle>
             <DialogDescription>

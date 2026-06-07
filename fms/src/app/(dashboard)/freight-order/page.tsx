@@ -148,7 +148,7 @@ export default function FreightOrderPage() {
 
       {/* Assign Truck Dialog */}
       <Dialog open={assignOpen} onOpenChange={setAssignOpen}>
-        <DialogContent className="sm:max-w-[400px]">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle>Assign Freight Vehicle</DialogTitle>
             <DialogDescription>
@@ -190,7 +190,7 @@ export default function FreightOrderPage() {
 
       {/* Register Freight Order Dialog */}
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-3xl">
           <form onSubmit={handleCreateOrder}>
             <DialogHeader>
               <DialogTitle>Register Freight Order</DialogTitle>
