@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { UserRole } from '@/types'
 
 export function middleware(request: NextRequest) {
   const authCookie = request.cookies.get('fms-authenticated')
@@ -32,7 +33,7 @@ export function middleware(request: NextRequest) {
   // Role-based route guards
   if (isAuthenticated) {
     if (pathname.startsWith('/users') || pathname.startsWith('/organization')) {
-      if (userRole !== 'super_admin') {
+      if (userRole !== UserRole.SUPER_ADMIN) {
         return NextResponse.redirect(new URL('/dashboard', request.url))
       }
     }

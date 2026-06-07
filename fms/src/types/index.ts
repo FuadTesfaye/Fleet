@@ -3,14 +3,15 @@
 // Ethiopian Ministry of Irrigation and Lowlands
 // ============================================================
 
-export type UserRole =
-  | "super_admin"
-  | "basic_service_manager"
-  | "transport_deployment_head"
-  | "transport_deployment_expert"
-  | "maintenance_expert"
-  | "driver"
-  | "ict_department"
+export enum UserRole {
+  SUPER_ADMIN = "super_admin",
+  BASIC_SERVICE_MANAGER = "basic_service_manager",
+  TRANSPORT_DEPLOYMENT_HEAD = "transport_deployment_head",
+  TRANSPORT_DEPLOYMENT_EXPERT = "transport_deployment_expert",
+  MAINTENANCE_EXPERT = "maintenance_expert",
+  DRIVER = "driver",
+  ICT_DEPARTMENT = "ict_department",
+}
 
 export type VehicleStatus =
   | "active"
@@ -283,11 +284,11 @@ export interface Tariff {
 }
 
 export const ROLE_LABELS: Record<UserRole, string> = {
-  super_admin: "Super Admin",
-  basic_service_manager: "Basic Service Manager",
-  transport_deployment_head: "Transport Deployment Head",
-  transport_deployment_expert: "Transport Deployment Expert",
-  maintenance_expert: "Maintenance Expert",
-  driver: "Driver",
-  ict_department: "ICT Department",
+  [UserRole.SUPER_ADMIN]: "Super Admin",
+  [UserRole.BASIC_SERVICE_MANAGER]: "Basic Service Manager",
+  [UserRole.TRANSPORT_DEPLOYMENT_HEAD]: "Transport Deployment Head",
+  [UserRole.TRANSPORT_DEPLOYMENT_EXPERT]: "Transport Deployment Expert",
+  [UserRole.MAINTENANCE_EXPERT]: "Maintenance Expert",
+  [UserRole.DRIVER]: "Driver",
+  [UserRole.ICT_DEPARTMENT]: "ICT Department",
 }

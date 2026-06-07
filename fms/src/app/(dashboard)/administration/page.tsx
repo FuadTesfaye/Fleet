@@ -67,7 +67,7 @@ export default function AdministrationPage() {
   const { rolePermissions, togglePermission, resetPermissions } = useRoleStore()
 
   const handleToggle = (role: UserRole, permission: string) => {
-    if (role === "super_admin") return // superadmin always has all permissions
+    if (role === UserRole.SUPER_ADMIN) return // superadmin always has all permissions
     togglePermission(role, permission)
     toast.success("Permission policy updated")
   }
@@ -133,7 +133,7 @@ export default function AdministrationPage() {
                           </TableCell>
                           {Object.keys(ROLE_LABELS).map((roleKey) => {
                             const role = roleKey as UserRole
-                            const isSuperAdmin = role === "super_admin"
+                            const isSuperAdmin = role === UserRole.SUPER_ADMIN
                             const perms = rolePermissions[role] || []
                             const hasPerm = isSuperAdmin || perms.includes("*") || perms.includes(perm.key)
 

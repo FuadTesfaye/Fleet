@@ -12,6 +12,7 @@ interface RequestState {
   approveRequestByHead: (id: string, headId: string) => void
   rejectRequest: (id: string, managerId: string) => void
   assignVehicleAndDriver: (id: string, vehicleId: string, driverId: string) => void
+  completeRequest: (id: string) => void
   getById: (id: string) => TransportRequest | undefined
 }
 
@@ -95,6 +96,21 @@ export const useRequestStore = create<RequestState>()((set, get) => ({
     useDriverStore.getState().updateDriver(driverId, {
       assignedVehicleId: vehicleId,
     })
+  },
+
+  completeRequest: (id) => {
+    const request = get().requests.find(r => r.id === id)
+    set((state) => ({
+      requests: state.requests.map((r) =>
+        r.id === id ? { ...r, status: "completed" } : r
+      ),
+    }))
+
+    if (request?.assignedVehicleId) {
+      useVehicleStore.getState().updateVehicle(request.assignedVehicleId, {
+        status: "idle",
+      })
+    }
   },
 
   getById: (id) => get().requests.find((r) => r.id === id),

@@ -54,7 +54,19 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useAuthStore } from "@/store/auth.store"
 import { ROLE_LABELS, UserRole } from "@/types"
 
-const data = {
+export type NavItem = {
+  title: string
+  url: string
+  icon: any
+  allowedRoles?: UserRole[]
+}
+
+export type NavGroup = {
+  title: string
+  items: NavItem[]
+}
+
+export const data: { navGroups: NavGroup[] } = {
   navGroups: [
     {
       title: "OVERVIEW",
@@ -73,21 +85,25 @@ const data = {
           title: "Company Management",
           url: "/company",
           icon: Building2,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER],
         },
         {
           title: "Division Management",
           url: "/division",
           icon: FolderOpen,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER],
         },
         {
           title: "Vehicle Management",
           url: "/vehicles",
           icon: Truck,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER, UserRole.TRANSPORT_DEPLOYMENT_EXPERT, UserRole.MAINTENANCE_EXPERT],
         },
         {
           title: "Driver Management",
           url: "/drivers",
           icon: UserCheck,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
       ],
     },
@@ -98,11 +114,13 @@ const data = {
           title: "User Management",
           url: "/account",
           icon: Users,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER, UserRole.ICT_DEPARTMENT],
         },
         {
           title: "Role Management",
           url: "/administration",
           icon: Settings,
+          allowedRoles: [UserRole.SUPER_ADMIN],
         },
       ],
     },
@@ -113,16 +131,19 @@ const data = {
           title: "Driver Assignment",
           url: "/driver-assignment",
           icon: Link2,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD],
         },
         {
           title: "Division Assignment",
           url: "/division-assignment",
           icon: ClipboardList,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD],
         },
         {
           title: "Request Assignment",
           url: "/request-assignment",
           icon: ClipboardList,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
       ],
     },
@@ -133,6 +154,7 @@ const data = {
           title: "User Requests",
           url: "/request",
           icon: FileText,
+          // No allowedRoles = all roles can request transport
         },
       ],
     },
@@ -143,6 +165,7 @@ const data = {
           title: "Vehicle Request",
           url: "/vehicle-request-order",
           icon: FileCheck,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER, UserRole.TRANSPORT_DEPLOYMENT_HEAD],
         },
       ],
     },
@@ -153,21 +176,25 @@ const data = {
           title: "Request Order Assignment",
           url: "/request-order-assignment",
           icon: FileSpreadsheet,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Assignment Change",
           url: "/request-order-assignment/change",
           icon: FileSpreadsheet,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Request History",
           url: "/vehicle-request-order/history",
           icon: FileSpreadsheet,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Request Approval",
           url: "/vehicle-request-order/approve",
           icon: FileCheck,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER, UserRole.TRANSPORT_DEPLOYMENT_HEAD],
         },
       ],
     },
@@ -178,16 +205,19 @@ const data = {
           title: "Live Tracking",
           url: "/vehicle-tracking",
           icon: Navigation,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "History Tracking",
           url: "/vehicle-tracking-history",
           icon: Map,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Show Fuel in Dashboard",
           url: "/vehicle-tracking/fuel-dashboard",
           icon: Fuel,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.BASIC_SERVICE_MANAGER, UserRole.TRANSPORT_DEPLOYMENT_HEAD],
         },
       ],
     },
@@ -198,11 +228,13 @@ const data = {
           title: "Geo Fence",
           url: "/geofence",
           icon: MapPin,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Geo Route",
           url: "/georoute",
           icon: Route,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_HEAD, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
       ],
     },
@@ -213,31 +245,37 @@ const data = {
           title: "Freight Order",
           url: "/freight-order",
           icon: Route,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Shipper",
           url: "/shipper",
           icon: Building2,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Consignee",
           url: "/consignee",
           icon: Building2,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Commodity",
           url: "/commodity",
           icon: Package,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Tariff",
           url: "/tariff",
           icon: FileText,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.TRANSPORT_DEPLOYMENT_EXPERT],
         },
         {
           title: "Fuel Refilled",
           url: "/fuel-refilled",
           icon: Fuel,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.DRIVER, UserRole.BASIC_SERVICE_MANAGER],
         },
       ],
     },
@@ -248,6 +286,7 @@ const data = {
           title: "Maintenance Request",
           url: "/maintenance-request",
           icon: Wrench,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.DRIVER, UserRole.MAINTENANCE_EXPERT, UserRole.BASIC_SERVICE_MANAGER],
         },
       ],
     },
@@ -258,6 +297,7 @@ const data = {
           title: "Material List LookUp",
           url: "/maintenance-material-list",
           icon: Package,
+          allowedRoles: [UserRole.SUPER_ADMIN, UserRole.MAINTENANCE_EXPERT],
         },
       ],
     },
@@ -307,13 +347,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   const roles: UserRole[] = [
-    "super_admin",
-    "basic_service_manager",
-    "transport_deployment_head",
-    "transport_deployment_expert",
-    "maintenance_expert",
-    "driver",
-    "ict_department",
+    UserRole.SUPER_ADMIN,
+    UserRole.BASIC_SERVICE_MANAGER,
+    UserRole.TRANSPORT_DEPLOYMENT_HEAD,
+    UserRole.TRANSPORT_DEPLOYMENT_EXPERT,
+    UserRole.MAINTENANCE_EXPERT,
+    UserRole.DRIVER,
+    UserRole.ICT_DEPARTMENT,
   ]
 
   return (
@@ -331,6 +371,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         {data.navGroups.map((group) => {
+          const visibleItems = group.items.filter(item => 
+            !item.allowedRoles || item.allowedRoles.includes(user.role)
+          )
+
+          if (visibleItems.length === 0) return null
+
           return (
             <Collapsible
               key={group.title}
@@ -347,7 +393,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <CollapsibleContent>
                   <SidebarGroupContent>
                     <SidebarMenu>
-                      {group.items.map((item) => {
+                      {visibleItems.map((item) => {
                         const isActive = pathname === item.url || pathname.startsWith(`${item.url}/`)
                         return (
                           <SidebarMenuItem key={item.title}>

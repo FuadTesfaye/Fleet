@@ -2,34 +2,34 @@ import { create } from "zustand"
 import { UserRole } from "@/types"
 
 const defaultRolePermissions: Record<UserRole, string[]> = {
-  super_admin: ["*"],
-  basic_service_manager: [
+  [UserRole.SUPER_ADMIN]: ["*"],
+  [UserRole.BASIC_SERVICE_MANAGER]: [
     "vehicles.view", "vehicles.create", "vehicles.edit",
     "drivers.view", "maintenance.view", "maintenance.approve",
     "fuel.view", "fuel.approve", "transport_requests.approve",
     "reports.view", "alerts.view", "incidents.view",
   ],
-  transport_deployment_head: [
+  [UserRole.TRANSPORT_DEPLOYMENT_HEAD]: [
     "vehicles.view", "drivers.view", "assignments.manage",
     "transport_requests.view", "transport_requests.approve",
     "dispatch.manage", "reports.view", "alerts.view",
   ],
-  transport_deployment_expert: [
+  [UserRole.TRANSPORT_DEPLOYMENT_EXPERT]: [
     "vehicles.view", "vehicles.create", "vehicles.edit",
     "drivers.view", "drivers.create",
     "dispatch.manage", "trips.manage", "fuel.approve",
     "incidents.create", "incidents.view", "reports.generate",
   ],
-  maintenance_expert: [
+  [UserRole.MAINTENANCE_EXPERT]: [
     "maintenance.view", "maintenance.approve", "work_orders.manage",
     "spare_parts.manage", "replaced_items.manage", "vehicles.view",
   ],
-  driver: [
+  [UserRole.DRIVER]: [
     "transport_requests.create", "fuel.request", 
     "maintenance.request", "incidents.create",
     "trips.view_own",
   ],
-  ict_department: ["users.view", "system.monitor"],
+  [UserRole.ICT_DEPARTMENT]: ["users.view", "system.monitor"],
 }
 
 interface RoleState {

@@ -6,6 +6,7 @@ import { DataTable } from "@/components/shared/data-table"
 import { columns } from "./columns"
 import { useRequestStore } from "@/store/request.store"
 import { useAuthStore } from "@/store/auth.store"
+import { UserRole } from "@/types"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import {
@@ -45,7 +46,7 @@ export default function RequestPage() {
   // Filter requests to only show the ones belonging to the logged in user
   const userRequests = React.useMemo(() => {
     if (!user) return []
-    if (user.role === "super_admin" || user.role === "basic_service_manager") return requests
+    if (user.role === UserRole.SUPER_ADMIN || user.role === UserRole.BASIC_SERVICE_MANAGER) return requests
     return requests.filter((r) => r.requestedById === user.id)
   }, [requests, user])
 
