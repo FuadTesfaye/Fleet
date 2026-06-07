@@ -53,11 +53,19 @@ export function FuelTrendChart() {
                 cursor={{ fill: 'hsl(var(--muted))', opacity: 0.2 }}
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
+                    const cost = payload[0].value
+                    const liters = payload[0].payload?.liters
                     return (
                       <div className="bg-background border rounded shadow-md p-2 text-sm">
                         <p className="font-semibold mb-1">{label}</p>
-                        <p className="text-[var(--color-cost)] font-medium">Cost: ETB {payload[0].value?.toLocaleString()}</p>
-                        <p className="text-[var(--color-liters)] font-medium">Volume: {payload[1].value} L</p>
+                        <p className="text-[var(--color-cost)] font-medium">
+                          Cost: ETB {typeof cost === "number" ? cost.toLocaleString() : cost}
+                        </p>
+                        {liters !== undefined && (
+                          <p className="text-[var(--color-liters)] font-medium">
+                            Volume: {typeof liters === "number" ? liters.toLocaleString() : liters} L
+                          </p>
+                        )}
                       </div>
                     )
                   }
