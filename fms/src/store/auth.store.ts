@@ -40,18 +40,29 @@ export const useAuthStore = create<AuthState>()(
         }
 
         set({ user, isAuthenticated: true })
+        if (typeof document !== "undefined") {
+          document.cookie = `fms-authenticated=true; path=/`
+          document.cookie = `fms-role=${user.role}; path=/`
+        }
         toast.success(`Welcome back, ${user.name}`)
         return true
       },
 
       logout: () => {
         set({ user: null, isAuthenticated: false })
+        if (typeof document !== "undefined") {
+          document.cookie = `fms-authenticated=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+          document.cookie = `fms-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+        }
       },
 
       switchRole: (role: UserRole) => {
         const currentUser = get().user
         if (currentUser) {
           set({ user: { ...currentUser, role } })
+          if (typeof document !== "undefined") {
+            document.cookie = `fms-role=${role}; path=/`
+          }
           toast.success(`Switched role to ${role}`)
         }
       },

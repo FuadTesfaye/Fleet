@@ -2,22 +2,13 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const authCookie = request.cookies.get('fms-auth')
+  const authCookie = request.cookies.get('fms-authenticated')
+  const roleCookie = request.cookies.get('fms-role')
   const { pathname } = request.nextUrl
 
   // Basic check for auth state in cookie
-  let isAuthenticated = false
-  let userRole = null
-
-  if (authCookie && authCookie.value) {
-    try {
-      const parsed = JSON.parse(decodeURIComponent(authCookie.value))
-      isAuthenticated = parsed?.state?.isAuthenticated || false
-      userRole = parsed?.state?.user?.role || null
-    } catch (e) {
-      // Invalid cookie JSON
-    }
-  }
+  const isAuthenticated = authCookie?.value === 'true'
+  const userRole = roleCookie?.value || null
 
   // Allow next static files, images, etc.
   if (
