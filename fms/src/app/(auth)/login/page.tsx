@@ -5,12 +5,13 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { loginSchema } from "@/lib/schemas/auth.schema"
 import { useAuthStore } from "@/store/auth.store"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { MapPin, Truck, ShieldCheck, Activity } from "lucide-react"
+import { MapPin, ShieldCheck, Activity } from "lucide-react"
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
@@ -72,8 +73,8 @@ export default function LoginPage() {
         <div className="flex flex-col h-full p-16">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-16">
-              <div className="bg-primary p-2 rounded-md">
-                <Truck className="w-6 h-6 text-primary-foreground" />
+              <div>
+                <Image src="/logo.png" alt="FleetOS Logo" width={40} height={40} className="object-contain" priority />
               </div>
               <h1 className="text-xl font-semibold tracking-tight text-sidebar-foreground">FleetOS</h1>
             </div>
@@ -140,8 +141,8 @@ export default function LoginPage() {
           
           {/* Mobile Header */}
           <div className="lg:hidden flex items-center gap-3 mb-10 justify-center">
-            <div className="bg-primary text-primary-foreground p-2 rounded-md">
-              <Truck size={24} />
+            <div>
+              <Image src="/logo.png" alt="FleetOS Logo" width={40} height={40} className="object-contain" priority />
             </div>
             <h1 className="text-xl font-semibold tracking-tight text-foreground">FleetOS</h1>
           </div>

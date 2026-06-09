@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import {
   Settings,
@@ -364,8 +365,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props}>
       <SidebarHeader className="h-16 flex items-center px-4 border-b">
         <div className="flex items-center gap-3 w-full overflow-hidden">
-          <div className="bg-primary text-primary-foreground p-1.5 rounded-lg flex-shrink-0">
-            <Truck size={24} />
+          <div className="flex-shrink-0">
+            <Image src="/logo.png" alt="FleetOS Logo" width={32} height={32} className="object-contain" priority />
           </div>
           <div className="flex flex-col overflow-hidden">
             <span className="font-bold truncate">IFMS PRO</span>
