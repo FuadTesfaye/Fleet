@@ -7,19 +7,32 @@ x-backend-env: &backend-env
   DB_PASS: fms
   REDIS_HOST: redis
   KAFKA_BOOTSTRAP: kafka:29092
+  JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport
 
 x-backend-depends: &backend-depends
   postgres:
     condition: service_healthy
   redis:
-    condition: service_started
+    condition: service_healthy
   kafka:
-    condition: service_started
+    condition: service_healthy
+
+x-backend-service: &backend-service
+  build:
+    context: ./backend
+    dockerfile: Dockerfile
+  restart: unless-stopped
+  environment:
+    <<: *backend-env
+  depends_on:
+    <<: *backend-depends
+  networks:
+    - fms-net
 
 services:
-  # ── Infrastructure ──────────────────────────────────────────
   postgres:
     image: postgis/postgis:15-3.3
+    restart: unless-stopped
     environment:
       POSTGRES_USER: fms
       POSTGRES_PASSWORD: fms
@@ -34,10 +47,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-      start_period: 20s
+      start_period: 30s
+    networks:
+      - fms-net
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped
     ports:
       - "6379:6379"
     command: redis-server --appendonly yes
@@ -48,17 +64,21 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+    networks:
+      - fms-net
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.1
+    restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
+    networks:
+      - fms-net
 
   kafka:
     image: confluentinc/cp-kafka:7.6.1
+    restart: unless-stopped
     depends_on:
       - zookeeper
     ports:
@@ -77,10 +97,13 @@ services:
       interval: 15s
       timeout: 10s
       retries: 10
-      start_period: 40s
+      start_period: 60s
+    networks:
+      - fms-net
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
+    restart: unless-stopped
     ports:
       - "9090:8080"
     environment:
@@ -88,27 +111,12 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
     depends_on:
       kafka:
-        condition: service_started
-
-  keycloak:
-    profiles: ["keycloak"]
-    image: quay.io/keycloak/keycloak:24.0.3
-    command: start-dev
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-      KC_DB_USERNAME: fms
-      KC_DB_PASSWORD: fms
-    ports:
-      - "8180:8080"
-    depends_on:
-      postgres:
         condition: service_healthy
+    networks:
+      - fms-net
 
-  # ── Backend microservices ───────────────────────────────────
   auth-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -119,10 +127,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8081
-    depends_on:
-      <<: *backend-depends
 
   user-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -133,10 +140,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8082
-    depends_on:
-      <<: *backend-depends
 
   vehicle-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -147,10 +153,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8083
-    depends_on:
-      <<: *backend-depends
 
   tracking-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -161,10 +166,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8084
-    depends_on:
-      <<: *backend-depends
 
   dispatch-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -175,10 +179,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8085
-    depends_on:
-      <<: *backend-depends
 
   maintenance-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -189,10 +192,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8086
-    depends_on:
-      <<: *backend-depends
 
   fuel-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -203,10 +205,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8087
-    depends_on:
-      <<: *backend-depends
 
   notification-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -217,10 +218,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8088
-    depends_on:
-      <<: *backend-depends
 
   reporting-service:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -231,10 +231,9 @@ services:
     environment:
       <<: *backend-env
       PORT: 8089
-    depends_on:
-      <<: *backend-depends
 
   gateway:
+    <<: *backend-service
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -246,30 +245,46 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       PORT: 8080
     depends_on:
-      - auth-service
-      - user-service
-      - vehicle-service
-      - tracking-service
-      - dispatch-service
-      - maintenance-service
-      - fuel-service
-      - notification-service
-      - reporting-service
+      auth-service:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+      vehicle-service:
+        condition: service_started
+      tracking-service:
+        condition: service_started
+      dispatch-service:
+        condition: service_started
+      maintenance-service:
+        condition: service_started
+      fuel-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
+      reporting-service:
+        condition: service_started
 
-  # ── Frontend ────────────────────────────────────────────────
   frontend:
     build:
       context: ./fms
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://localhost:8080
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8080
       INTERNAL_API_URL: http://gateway:8080
     depends_on:
-      - gateway
+      gateway:
+        condition: service_healthy
+    networks:
+      - fms-net
+
+networks:
+  fms-net:
+    driver: bridge
 
 volumes:
   pg_data:
