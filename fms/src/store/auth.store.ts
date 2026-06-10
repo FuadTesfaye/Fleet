@@ -2,7 +2,8 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { User, UserRole } from "@/types"
 import { mockUsers } from "@/lib/mock-data"
-import { apiFetch, clearAuthTokens, isApiEnabled, storeAuthTokens } from "@/lib/api-client"
+import { apiFetch, clearAuthTokens, storeAuthTokens } from "@/lib/api-client"
+import { isApiEnabled } from "@/lib/env"
 import { toast } from "sonner"
 
 interface AuthState {

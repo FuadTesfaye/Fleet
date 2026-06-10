@@ -30,6 +30,7 @@ const defaultRolePermissions: Record<UserRole, string[]> = {
     "trips.view_own",
   ],
   [UserRole.ICT_DEPARTMENT]: ["users.view", "system.monitor"],
+  [UserRole.USER]: ["vehicles.view", "transport_requests.view", "reports.view"],
 }
 
 interface RoleState {
