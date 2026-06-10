@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate module POMs for all FMS services (nested folder layout)."""
+"""Generate module POMs for all FMS services (nested: auth/auth.domain, etc.)."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -14,6 +14,10 @@ PARENT = f"""  <parent>
     <version>{VERSION}</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>"""
+
+
+def module_dir(svc: str, layer: str) -> Path:
+    return ROOT / svc / f"{svc}.{layer}"
 
 
 def domain_pom(svc: str) -> str:
@@ -77,6 +81,7 @@ def infrastructure_pom(svc: str) -> str:
     <dependency><groupId>org.springframework.kafka</groupId><artifactId>spring-kafka</artifactId></dependency>
     <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><scope>provided</scope></dependency>
     <dependency><groupId>org.mapstruct</groupId><artifactId>mapstruct</artifactId></dependency>
+    <dependency><groupId>org.springframework.security</groupId><artifactId>spring-security-crypto</artifactId></dependency>
   </dependencies>
 </project>
 """
@@ -146,10 +151,10 @@ def main():
     }
     for svc in SERVICES:
         for layer in LAYERS:
-            path = ROOT / svc / layer
+            path = module_dir(svc, layer)
             path.mkdir(parents=True, exist_ok=True)
             (path / "pom.xml").write_text(writers[layer](svc))
-    print(f"Generated POMs for {len(SERVICES)} services under nested folders")
+    print(f"Generated POMs for {len(SERVICES)} services (e.g. {SERVICES[0]}/{SERVICES[0]}.domain)")
 
 
 if __name__ == "__main__":

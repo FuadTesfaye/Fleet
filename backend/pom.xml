@@ -14,59 +14,59 @@
   <modules>
     <module>common</module>
 
-    <module>auth/domain</module>
-    <module>auth/application</module>
-    <module>auth/infrastructure</module>
-    <module>auth/api</module>
-    <module>auth/test</module>
+    <module>auth/auth.domain</module>
+    <module>auth/auth.application</module>
+    <module>auth/auth.infrastructure</module>
+    <module>auth/auth.api</module>
+    <module>auth/auth.test</module>
 
-    <module>user/domain</module>
-    <module>user/application</module>
-    <module>user/infrastructure</module>
-    <module>user/api</module>
-    <module>user/test</module>
+    <module>user/user.domain</module>
+    <module>user/user.application</module>
+    <module>user/user.infrastructure</module>
+    <module>user/user.api</module>
+    <module>user/user.test</module>
 
-    <module>vehicle/domain</module>
-    <module>vehicle/application</module>
-    <module>vehicle/infrastructure</module>
-    <module>vehicle/api</module>
-    <module>vehicle/test</module>
+    <module>vehicle/vehicle.domain</module>
+    <module>vehicle/vehicle.application</module>
+    <module>vehicle/vehicle.infrastructure</module>
+    <module>vehicle/vehicle.api</module>
+    <module>vehicle/vehicle.test</module>
 
-    <module>tracking/domain</module>
-    <module>tracking/application</module>
-    <module>tracking/infrastructure</module>
-    <module>tracking/api</module>
-    <module>tracking/test</module>
+    <module>tracking/tracking.domain</module>
+    <module>tracking/tracking.application</module>
+    <module>tracking/tracking.infrastructure</module>
+    <module>tracking/tracking.api</module>
+    <module>tracking/tracking.test</module>
 
-    <module>dispatch/domain</module>
-    <module>dispatch/application</module>
-    <module>dispatch/infrastructure</module>
-    <module>dispatch/api</module>
-    <module>dispatch/test</module>
+    <module>dispatch/dispatch.domain</module>
+    <module>dispatch/dispatch.application</module>
+    <module>dispatch/dispatch.infrastructure</module>
+    <module>dispatch/dispatch.api</module>
+    <module>dispatch/dispatch.test</module>
 
-    <module>maintenance/domain</module>
-    <module>maintenance/application</module>
-    <module>maintenance/infrastructure</module>
-    <module>maintenance/api</module>
-    <module>maintenance/test</module>
+    <module>maintenance/maintenance.domain</module>
+    <module>maintenance/maintenance.application</module>
+    <module>maintenance/maintenance.infrastructure</module>
+    <module>maintenance/maintenance.api</module>
+    <module>maintenance/maintenance.test</module>
 
-    <module>fuel/domain</module>
-    <module>fuel/application</module>
-    <module>fuel/infrastructure</module>
-    <module>fuel/api</module>
-    <module>fuel/test</module>
+    <module>fuel/fuel.domain</module>
+    <module>fuel/fuel.application</module>
+    <module>fuel/fuel.infrastructure</module>
+    <module>fuel/fuel.api</module>
+    <module>fuel/fuel.test</module>
 
-    <module>notification/domain</module>
-    <module>notification/application</module>
-    <module>notification/infrastructure</module>
-    <module>notification/api</module>
-    <module>notification/test</module>
+    <module>notification/notification.domain</module>
+    <module>notification/notification.application</module>
+    <module>notification/notification.infrastructure</module>
+    <module>notification/notification.api</module>
+    <module>notification/notification.test</module>
 
-    <module>reporting/domain</module>
-    <module>reporting/application</module>
-    <module>reporting/infrastructure</module>
-    <module>reporting/api</module>
-    <module>reporting/test</module>
+    <module>reporting/reporting.domain</module>
+    <module>reporting/reporting.application</module>
+    <module>reporting/reporting.infrastructure</module>
+    <module>reporting/reporting.api</module>
+    <module>reporting/reporting.test</module>
 
     <module>gateway</module>
   </modules>

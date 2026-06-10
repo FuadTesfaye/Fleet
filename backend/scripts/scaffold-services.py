@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scaffold minimal boot apps for non-auth services (nested folder layout)."""
+"""Scaffold minimal boot apps for non-auth services."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -16,14 +16,16 @@ SERVICES = {
 }
 
 
-def pkg_path(base_pkg: str, sub: str) -> Path:
-    return ROOT / sub.replace(".", "/")
+def module_path(svc: str, layer: str) -> Path:
+    return ROOT / svc / f"{svc}.{layer}"
 
 
 def write_api_boot(svc: str, port: str, app_name: str, base_pkg: str, class_name: str):
-    api_java = ROOT / svc / "api" / "src" / "main" / "java" / base_pkg.replace(".", "/")
+    api_java = module_path(svc, "api") / "src" / "main" / "java" / base_pkg.replace(".", "/") / "api"
     api_java.mkdir(parents=True, exist_ok=True)
-    (api_java / f"{class_name}.java").write_text(f"""package {base_pkg}.api;
+    main_class = api_java / f"{class_name}.java"
+    if not main_class.exists():
+        main_class.write_text(f"""package {base_pkg}.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,9 +38,11 @@ public class {class_name} {{
 }}
 """)
 
-    resources = ROOT / svc / "api" / "src" / "main" / "resources"
+    resources = module_path(svc, "api") / "src" / "main" / "resources"
     resources.mkdir(parents=True, exist_ok=True)
-    (resources / "application.yml").write_text(f"""spring:
+    app_yml = resources / "application.yml"
+    if not app_yml.exists():
+        app_yml.write_text(f"""spring:
   application:
     name: {app_name}
   datasource:
@@ -72,28 +76,25 @@ springdoc:
     path: /swagger-ui
 """)
 
-    infra = ROOT / svc / "infrastructure" / "src" / "main" / "resources" / "db" / "migration"
+    infra = module_path(svc, "infrastructure") / "src" / "main" / "resources" / "db" / "migration"
     infra.mkdir(parents=True, exist_ok=True)
     placeholder = infra / "V1__init.sql"
     if not placeholder.exists():
         placeholder.write_text(f"-- {svc} service schema placeholder\nSELECT 1;\n")
 
-    # domain placeholder
-    domain_java = ROOT / svc / "domain" / "src" / "main" / "java" / base_pkg.replace(".", "/") / "domain"
+    domain_java = module_path(svc, "domain") / "src" / "main" / "java" / base_pkg.replace(".", "/") / "domain"
     domain_java.mkdir(parents=True, exist_ok=True)
     marker = domain_java / "package-info.java"
     if not marker.exists():
         marker.write_text(f"/**\n * {svc.title()} domain layer — pure Java, no framework dependencies.\n */\npackage {base_pkg}.domain;\n")
 
-    # application placeholder config
-    app_java = ROOT / svc / "application" / "src" / "main" / "java" / base_pkg.replace(".", "/") / "application"
+    app_java = module_path(svc, "application") / "src" / "main" / "java" / base_pkg.replace(".", "/") / "application"
     app_java.mkdir(parents=True, exist_ok=True)
     app_marker = app_java / "package-info.java"
     if not app_marker.exists():
         app_marker.write_text(f"package {base_pkg}.application;\n")
 
-    # infrastructure jpa config
-    infra_java = ROOT / svc / "infrastructure" / "src" / "main" / "java" / base_pkg.replace(".", "/") / "infrastructure" / "config"
+    infra_java = module_path(svc, "infrastructure") / "src" / "main" / "java" / base_pkg.replace(".", "/") / "infrastructure" / "config"
     infra_java.mkdir(parents=True, exist_ok=True)
     jpa_config = infra_java / "JpaConfig.java"
     if not jpa_config.exists():
@@ -113,7 +114,7 @@ public class JpaConfig {{}}
 def main():
     for svc, (port, app_name, base_pkg, class_name) in SERVICES.items():
         write_api_boot(svc, port, app_name, base_pkg, class_name)
-    print(f"Scaffolded {len(SERVICES)} services")
+    print(f"Scaffolded {len(SERVICES)} services under {{svc}}/{{svc}}.{{layer}}/ layout")
 
 
 if __name__ == "__main__":

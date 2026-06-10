@@ -4,18 +4,21 @@ Production-grade Maven multi-module Spring Boot backend for the Fleet Management
 
 ## Layout
 
-Each service lives in its own folder with five layers:
+Each service lives in its own parent folder; layers are named `{service}.{layer}`:
 
 ```
 backend/
-├── common/                    # Shared kernel
+├── common/
 ├── auth/
-│   ├── domain/
-│   ├── application/
-│   ├── infrastructure/
-│   ├── api/
-│   └── test/
+│   ├── auth.domain/
+│   ├── auth.application/
+│   ├── auth.infrastructure/
+│   ├── auth.api/
+│   └── auth.test/
 ├── user/
+│   ├── user.domain/
+│   ├── user.application/
+│   └── ...
 ├── vehicle/
 ├── tracking/
 ├── dispatch/
@@ -28,7 +31,7 @@ backend/
 └── pom.xml
 ```
 
-**Dependency direction:** `api` → `application` → `domain`; `infrastructure` → `application` + `domain`. Domain has zero framework dependencies.
+**Dependency direction:** `*.api` → `*.application` → `*.domain`; `*.infrastructure` → `*.application` + `*.domain`. Domain has zero framework dependencies.
 
 ## Prerequisites
 
@@ -73,7 +76,7 @@ docker compose up -d
 The `auth/` service is fully implemented end-to-end. Other services have bootstrapped API modules and placeholder domain/application layers — extend them following the auth pattern.
 
 ```bash
-mvn -pl auth/api spring-boot:run
+mvn -pl auth/auth.api spring-boot:run
 ```
 
 Swagger UI: http://localhost:8081/swagger-ui
