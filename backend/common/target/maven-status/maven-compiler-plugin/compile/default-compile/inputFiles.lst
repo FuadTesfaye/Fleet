@@ -1,0 +1,14 @@
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/domain/AggregateRoot.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/domain/BaseEntity.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/domain/DomainEvent.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/event/BaseKafkaEvent.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/event/KafkaTopics.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/exception/ConflictException.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/exception/DomainException.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/exception/FmsBaseException.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/exception/ResourceNotFoundException.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/exception/ValidationException.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/response/ApiResponse.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/response/PagedResponse.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/util/DateUtils.java
+/home/fuaf24/Insa/Fleet/backend/common/src/main/java/com/fms/common/util/UuidUtils.java
