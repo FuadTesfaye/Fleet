@@ -1,0 +1,10 @@
+CREATE DATABASE fms_auth;
+CREATE DATABASE fms_user;
+CREATE DATABASE fms_vehicle;
+CREATE DATABASE fms_tracking;
+CREATE DATABASE fms_dispatch;
+CREATE DATABASE fms_maintenance;
+CREATE DATABASE fms_fuel;
+CREATE DATABASE fms_notification;
+CREATE DATABASE fms_reporting;
+CREATE DATABASE keycloak;

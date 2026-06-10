@@ -1,0 +1,276 @@
+name: fms
+
+x-backend-env: &backend-env
+  SPRING_PROFILES_ACTIVE: docker
+  DB_HOST: postgres
+  DB_USER: fms
+  DB_PASS: fms
+  REDIS_HOST: redis
+  KAFKA_BOOTSTRAP: kafka:29092
+
+x-backend-depends: &backend-depends
+  postgres:
+    condition: service_healthy
+  redis:
+    condition: service_started
+  kafka:
+    condition: service_started
+
+services:
+  # ── Infrastructure ──────────────────────────────────────────
+  postgres:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_USER: fms
+      POSTGRES_PASSWORD: fms
+      POSTGRES_DB: fms_auth
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./docker/postgres/init-databases.sql:/docker-entrypoint-initdb.d/02-init-databases.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fms -d fms_auth"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "9090:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      kafka:
+        condition: service_started
+
+  keycloak:
+    profiles: ["keycloak"]
+    image: quay.io/keycloak/keycloak:24.0.3
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: fms
+      KC_DB_PASSWORD: fms
+    ports:
+      - "8180:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ── Backend microservices ───────────────────────────────────
+  auth-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: auth/auth.api
+    ports:
+      - "8081:8081"
+    environment:
+      <<: *backend-env
+      PORT: 8081
+    depends_on:
+      <<: *backend-depends
+
+  user-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: user/user.api
+    ports:
+      - "8082:8082"
+    environment:
+      <<: *backend-env
+      PORT: 8082
+    depends_on:
+      <<: *backend-depends
+
+  vehicle-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: vehicle/vehicle.api
+    ports:
+      - "8083:8083"
+    environment:
+      <<: *backend-env
+      PORT: 8083
+    depends_on:
+      <<: *backend-depends
+
+  tracking-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: tracking/tracking.api
+    ports:
+      - "8084:8084"
+    environment:
+      <<: *backend-env
+      PORT: 8084
+    depends_on:
+      <<: *backend-depends
+
+  dispatch-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: dispatch/dispatch.api
+    ports:
+      - "8085:8085"
+    environment:
+      <<: *backend-env
+      PORT: 8085
+    depends_on:
+      <<: *backend-depends
+
+  maintenance-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: maintenance/maintenance.api
+    ports:
+      - "8086:8086"
+    environment:
+      <<: *backend-env
+      PORT: 8086
+    depends_on:
+      <<: *backend-depends
+
+  fuel-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: fuel/fuel.api
+    ports:
+      - "8087:8087"
+    environment:
+      <<: *backend-env
+      PORT: 8087
+    depends_on:
+      <<: *backend-depends
+
+  notification-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: notification/notification.api
+    ports:
+      - "8088:8088"
+    environment:
+      <<: *backend-env
+      PORT: 8088
+    depends_on:
+      <<: *backend-depends
+
+  reporting-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: reporting/reporting.api
+    ports:
+      - "8089:8089"
+    environment:
+      <<: *backend-env
+      PORT: 8089
+    depends_on:
+      <<: *backend-depends
+
+  gateway:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        MODULE: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      PORT: 8080
+    depends_on:
+      - auth-service
+      - user-service
+      - vehicle-service
+      - tracking-service
+      - dispatch-service
+      - maintenance-service
+      - fuel-service
+      - notification-service
+      - reporting-service
+
+  # ── Frontend ────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./fms
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+      INTERNAL_API_URL: http://gateway:8080
+    depends_on:
+      - gateway
+
+volumes:
+  pg_data:
+  redis_data:

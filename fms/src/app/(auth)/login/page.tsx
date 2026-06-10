@@ -16,6 +16,7 @@ import { MapPin, ShieldCheck, Activity } from "lucide-react"
 type LoginFormValues = z.infer<typeof loginSchema>
 
 const QUICK_LOGINS = [
+  { label: "API Admin", email: "admin@fms.gov.et" },
   { label: "Super Admin", email: "superadmin@fleet.com" },
   { label: "Basic Manager", email: "manager@fleet.com" },
   { label: "Deployment Head", email: "deployhead@fleet.com" },
